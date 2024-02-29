@@ -1,13 +1,11 @@
 import CourseModel from "../model/Course.model.js";
 
 class SiteController {
-  async home(req, res) {
-    try {
-      const courses = await CourseModel.find();
-      res.json(courses);
-    } catch (err) {
-      res.status(400).json({ error: "ERROR!!!" });
-    }
+  home(req, res, next) {
+    CourseModel.find({})
+      .lean()
+      .then((courses) => res.render("home", { courses: courses }))
+      .catch(next);
   }
 
   search(req, res) {
